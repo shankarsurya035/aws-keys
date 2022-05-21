@@ -1,0 +1,49 @@
+172.31.0.161 master-node
+172.31.0.236 worker-node-1
+172.31.0.190 worker-node-2
+
+
+Admin  UI: https://52.66.214.220:943/admin
+Client UI: https://52.66.214.220:943/
+
+
+
+
+hostnamectl set-hostname master-node
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install docker.io
+sudo apt-mark hold kubelet kubeadm kubectl
+kubeadm init --pod-network-cidr=10.244.0.0/16 -v=9
+
+
+kubectl get pods -n kube-system
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl create deployment ngnix --image ngnix
+kubectl expose deployment ngnix --type NodePort --port 80
+
+
+admin
+aZpU2abKP
+
+CREATE DATABASE fbs;
+USE fbs;
+CREATE TABLE Persons (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+
+INSERT into Persons values(123345,'shankar','surya','Tulsi vihar','Bhubaneswar');
+select * from Persons;
